@@ -1,0 +1,43 @@
+1.)
+a.) 
+	SELECT film.Naslov, bioskop.Naziv, COUNT(*) as brojPrikazivanja FROM film 
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON sala.Broj = projekcija.Broj AND sala.BID = projekcija.BID	
+	JOIN bioskop ON bioskop.BID = sala.BID
+	GROUP BY film.Naslov, bioskop.Naziv
+	HAVING COUNT(*) >= 5
+b.)
+	SELECT film.Naslov, COUNT(*) as brojPrikazivanja FROM film 
+	JOIN projekcija ON film.FID = projekcija.FID	
+	JOIN sala ON sala.Broj = projekcija.Broj AND sala.BID = projekcija.BID
+	JOIN bioskop ON bioskop.BID = sala.BID
+	GROUP BY film.Naslov
+	ORDER BY brojPrikazivanja DESC
+	LIMIT 1
+e.)
+	SELECT bioskop.Naziv FROM film 
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	WHERE film.Naslov = (SELECT film.Naslov FROM film 
+	JOIN projekcija ON film.FID = projekcija.FID	
+	JOIN sala ON sala.Broj = projekcija.Broj AND sala.BID = projekcija.BID
+	JOIN bioskop ON bioskop.BID = sala.BID
+	GROUP BY film.Naslov
+	ORDER BY COUNT(*) DESC
+	LIMIT 1)
+	GROUP BY bioskop.Naziv
+f.)
+	SELECT film.FID, bioskop.BID, COUNT(*) as brojPrikazivanja FROM film 
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	GROUP BY bioskop.BID, film.FID
+	HAVING brojPrikazivanja >= 3
+g.)
+	SELECT projekcija.BrojGledalaca, bioskop.Naziv FROM projekcija
+	JOIN sala ON projekcija.BID = sala.BID AND projekcija.Broj = sala.Broj
+	JOIN bioskop ON sala.BID = bioskop.BID
+	WHERE projekcija.BrojGledalaca = (SELECT MAX(BrojGledalaca) FROM projekcija)
+
+
