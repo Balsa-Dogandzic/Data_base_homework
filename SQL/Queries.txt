@@ -14,6 +14,13 @@ b.)
 	GROUP BY film.Naslov
 	ORDER BY brojPrikazivanja DESC
 	LIMIT 1
+c.)
+	SELECT film.Naslov,COUNT(DISTINCT(bioskop.BID)) brojBioskopa FROM film
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	GROUP BY film.Naslov
+	HAVING brojBioskopa = (SELECT COUNT(*) FROM bioskop)
 e.)
 	SELECT bioskop.Naziv FROM film 
 	JOIN projekcija ON film.FID = projekcija.FID
@@ -39,6 +46,13 @@ g.)
 	JOIN sala ON projekcija.BID = sala.BID AND projekcija.Broj = sala.Broj
 	JOIN bioskop ON sala.BID = bioskop.BID
 	WHERE projekcija.BrojGledalaca = (SELECT MAX(BrojGledalaca) FROM projekcija)
+i.)
+	SELECT bioskop.Naziv,COUNT(DISTINCT(film.FID)) brojFilmova FROM film
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	GROUP BY bioskop.Naziv
+	HAVING brojFilmova = (SELECT COUNT(*) FROM film)
 j.)
 	SELECT bioskop.Ime,bioskop.Naziv,SUM(projekcija.BrojGledalaca) as ukupanBrojLjudi FROM projekcija
 	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
@@ -57,5 +71,12 @@ c.)
 	JOIN bioskop on sala.BID = bioskop.BID
 	GROUP BY bioskop.BID
 	HAVING COUNT(*) > 1
+e.)
+	SELECT film.Naslov, COUNT(DISTINCT(bioskop.BID)) brojBioskopa FROM film
+	JOIN projekcija ON film.FID = projekcija.FID
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	GROUP BY film.Naslov
+	HAVING brojBioskopa = (SELECT COUNT(*) FROM bioskop)
 
 
