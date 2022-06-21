@@ -39,5 +39,11 @@ g.)
 	JOIN sala ON projekcija.BID = sala.BID AND projekcija.Broj = sala.Broj
 	JOIN bioskop ON sala.BID = bioskop.BID
 	WHERE projekcija.BrojGledalaca = (SELECT MAX(BrojGledalaca) FROM projekcija)
-
+j.)
+	SELECT bioskop.Ime,bioskop.Naziv,SUM(projekcija.BrojGledalaca) as ukupanBrojLjudi FROM projekcija
+	JOIN sala ON projekcija.Broj = sala.Broj AND projekcija.BID = sala.BID
+	JOIN bioskop ON sala.BID = bioskop.BID
+	GROUP BY projekcija.BID, projekcija.Broj
+	ORDER BY ukupanBrojLjudi DESC
+	LIMIT 1
 
