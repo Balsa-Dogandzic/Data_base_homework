@@ -46,4 +46,16 @@ j.)
 	GROUP BY projekcija.BID, projekcija.Broj
 	ORDER BY ukupanBrojLjudi DESC
 	LIMIT 1
+2.)
+a.)
+	SELECT * FROM sala
+	WHERE Kapacitet > 50
+b.)
+	SELECT Broj, BID, MAX(Kapacitet) FROM sala
+c.)
+	SELECT bioskop.Ime,bioskop.Naziv, COUNT(*) as brojSala FROM sala
+	JOIN bioskop on sala.BID = bioskop.BID
+	GROUP BY bioskop.BID
+	HAVING COUNT(*) > 1
+
 
